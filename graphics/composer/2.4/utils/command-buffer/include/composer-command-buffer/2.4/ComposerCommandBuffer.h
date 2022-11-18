@@ -54,6 +54,14 @@ class CommandWriterBase : public V2_3::CommandWriterBase {
         endCommand();
     }
 
+    static constexpr uint16_t kSetExpectedPresentTime = 2;
+    void setExpectedPresentTime(int64_t expectedPresentTime) {
+        beginCommand(IComposerClient::Command::SET_EXPECTED_PRESENT_TIME,
+                     kSetExpectedPresentTime);
+        write64Signed(expectedPresentTime);
+        endCommand();
+    }
+
     void setLayerGenericMetadata(const hidl_string& key, const bool mandatory,
                                  const hidl_vec<uint8_t>& value) {
         const size_t commandSize = 3 + sizeToElements(key.size()) + sizeToElements(value.size());
@@ -73,6 +81,13 @@ class CommandWriterBase : public V2_3::CommandWriterBase {
     }
 
   protected:
+    void write64Signed(int64_t val) {
+      int32_t lo = val & 0xffffffff;
+      int32_t hi = val >> 32;
+      writeSigned(lo);
+      writeSigned(hi);
+    }
+
     uint32_t sizeToElements(uint32_t size) { return (size + 3) / 4; }
 };
 

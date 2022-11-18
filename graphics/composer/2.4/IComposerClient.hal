@@ -116,6 +116,9 @@ interface IComposerClient extends @2.3::IComposerClient {
          *        corresponding to the key as described above
          */
         SET_LAYER_GENERIC_METADATA = 0x40e << @2.1::IComposerClient.Command:OPCODE_SHIFT,
+
+        SET_EXPECTED_PRESENT_TIME  = 0x207 << @2.1::IComposerClient.Command:OPCODE_SHIFT,
+
     };
 
     /**
